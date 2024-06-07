@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= book.title %></title>
+    <script>
+        function toggleContent(chapterId) {
+            var content = document.getElementById('content-' + chapterId);
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+            } else {
+                content.style.display = 'none';
+            }
+        }
+
+        
+    </script>
+    <style>
+        /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2; /* Light gray background color */
+    color: #333; /* Dark gray text color */
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333; /* Dark gray text color */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+h3 {
+    cursor: pointer;
+    color: #007bff; /* Blue link color */
+    margin-bottom: 10px;
+}
+
+h3:hover {
+    text-decoration: underline; /* Underline link on hover */
+}
+
+#content {
+    display: none;
+}
+
+a {
+    color: #007bff; /* Blue link color */
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+a:hover {
+    text-decoration: underline; /* Underline link on hover */
+}
+
+    </style>
+</head>
+<body>
+    <h1><%= book.title %></h1>,
+    <% if (book.thumbnail) { %>
+        <img src="/thumbnails/<%= book.thumbnail %>" alt="<%= book.title %>">
+    <% } %>
+    <p><%= book.description %></p>
+    <p>Tags: <%= book.tags.join(', ') %></p>
+    <p>Author: <%= book.author.username %></p>
+    <h2>Chapters</h2>
+    <ul>
+        <% book.chapters.forEach(chapter => { %>
+            <li>
+                <h3 onclick="toggleContent('<%= chapter._id %>')" style="cursor: pointer;"><%= chapter.title %></h3>
+                <div id="content-<%= chapter._id %>" style="display: none;">
+                    <p><%= chapter.content %></p>
+                    <small>by <%= chapter.author.username %></small>
+                </div>
+            </li>
+        <% }) %>
+    </ul>
+    <% if (user) { %>
+        <a href="/books/<%= book._id %>/chapters/new">Add New Chapter</a>
+    <% } %>
+</body>
+</html>

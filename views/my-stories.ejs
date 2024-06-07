@@ -1,0 +1,113 @@
+<!-- views/my-stories.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Stories</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Additional styles if needed -->
+
+    <style>
+        /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+.my-stories-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+li:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+}
+
+img {
+    width: 200px;
+    height: auto;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    padding: 10px;
+}
+
+a:hover {
+    background-color: #f0f0f0;
+}
+
+    </style>
+</head>
+<body>
+    <h1>My Stories</h1>
+    <nav>
+        <a href="/">Home</a>
+        <% if (user) { %>
+            <a href="/users/profile">Profile</a>
+            <a href="/books/new">New Book</a>
+            <a href="/users/logout">Logout</a>
+        <% } else { %>
+            <a href="/users/register">Register</a>
+            <a href="/users/login">Login</a>
+        <% } %>
+    </nav>
+    <div class="my-stories-container">
+        <% if (stories.length > 0) { %>
+            <ul>
+                <% stories.forEach(story => { %>
+                    <li>
+                        <% if (story.thumbnail) { %>
+                            <img src="/thumbnails/<%= story.thumbnail %>" alt="<%= story.title %>">
+                        <% } %>
+                        <a href="/books/<%= story._id %>"><%= story.title %></a>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No stories found.</p>
+        <% } %>
+    </div>
+</body>
+</html>

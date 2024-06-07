@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <style>
+        body {
+       font-family: Arial, sans-serif;
+       margin: 0;
+       padding: 0;
+       background-color: #f2f2f2; /* Light gray background color */
+       color: #333; /* Dark gray text color */
+   }
+   
+   h1 {
+       text-align: center;
+       margin-top: 20px;
+       color: #333; /* Dark gray text color */
+   }
+   
+   nav {
+       background-color: #333; /* Dark gray navigation background color */
+       color: white;
+       padding: 10px 0;
+       text-align: center;
+   }
+   
+   nav a {
+       color: white;
+       margin: 0 15px;
+       text-decoration: none;
+   }
+   
+   .search-form {
+       margin-bottom: 20px; /* Add some space below the form */
+       text-align: center; /* Center align the form */
+   }
+   
+   .search-form input[type="text"] {
+       margin-right: 10px; /* Add some space to the right of the input */
+       padding: 8px; /* Add padding to the input */
+       border: 1px solid #ccc; /* Add a border */
+       border-radius: 4px; /* Add some border radius */
+       font-size: 16px; /* Set font size */
+   }
+   
+   .search-form label {
+       margin-right: 10px; /* Add some space to the right of each checkbox label */
+       font-size: 16px; /* Set font size */
+   /* White text color */
+   }
+   
+   .search-form button {
+       padding: 8px 16px; /* Add padding to the button */
+       background-color: #007bff; /* Blue button color */
+       color: #fff; /* White text color */
+       border: none; /* Remove border */
+       border-radius: 4px; /* Add some border radius */
+       font-size: 16px; /* Set font size */
+       cursor: pointer; /* Add cursor pointer on hover */
+   }
+   
+   /* Style button on hover */
+   .search-form button:hover {
+       background-color: #0056b3; /* Darken button background color on hover */
+   }
+   
+   .book-container {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 20px;
+       margin: 20px;
+   }
+   
+   .book-card {
+       width: 330px; /* 3 cards per row */
+       margin-bottom: 20px;
+       padding: 10px;
+       background-color: #f9f9f9; /* Light gray card background color */
+       border: 1px solid #ccc;
+       border-radius: 5px;
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       transition: transform 0.2s;
+   }
+   
+   .book-card:hover {
+       transform: scale(1.05);
+       background-color: #eee; /* Lighten card background color on hover */
+   }
+   
+   .book-card img {
+       max-width: 100%;
+       height: auto;
+       border-bottom: 1px solid #ccc;
+       margin-bottom: 10px;
+   }
+   
+   .pagination {
+       margin-top: 20px;
+       text-align: center;
+   }
+   
+   .pagination a {
+       color: black;
+       padding: 8px 16px;
+       text-decoration: none;
+       border: 1px solid #ddd;
+       margin: 0 4px;
+       display: inline-block;
+   }
+   
+   .pagination a.active {
+       background-color: #007bff; /* Blue active page color */
+       color: white;
+       border: 1px solid #007bff;
+   }
+   
+   .pagination a:hover:not(.active) {
+       background-color: #ddd;
+   }
+   
+       </style>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <nav>
+        <a href="/">Home</a>
+        <% if (!user) { %>
+            <a href="/users/register">Register</a>
+            <a href="/users/login">Login</a>
+        <% } else { %>
+            <a href="/users/profile">Profile</a>
+            <a href="/books/new">New Book</a>
+            <a href="/users/logout">Logout</a>
+        <% } %>
+    </nav>
+
+    <div class="book-container">
+        <% books.forEach(book => { %>
+            <div class="book-card">
+                <% if (book.thumbnail) { %>
+                    <img src="/thumbnails/<%= book.thumbnail %>" alt="<%= book.title %>">
+                <% } %>
+                <h2><a href="/books/<%= book._id %>"><%= book.title %></a></h2>
+                <p><%= book.description %></p>
+                <p>Tags: <%= book.tags.join(', ') %></p>
+                <small>by <%= book.author.username %></small>
+            </div>
+        <% }) %>
+    </div>
+    <% if (pages > 1) { %>
+        <div class="pagination">
+            <% for (let i = 1; i <= pages; i++) { %>
+                <a href="/search?page=<%= i %>&query=<%= query %>&searchBy=<%= searchBy.join(',') %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        </div>
+    <% } %>
+</body>
+</html>
